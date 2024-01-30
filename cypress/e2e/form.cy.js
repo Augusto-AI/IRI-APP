@@ -1,43 +1,37 @@
 describe('Testing form', () => {
+  const iriEmail = 'iri@example.com'
+  const iriPassword = 'password123'
 
-  const name = 'Testing'
-  const email = 'testing@testing.com'
-  const feedback = 'Testing form using Cypress'
+  const studentName = 'Student'
+  const hoursMet = '5'
+  const progressDescription = 'Good progress this week.'
 
   beforeEach(() => {
     cy.visit('/')
   })
 
-  it('check for validation message for invalid email input', () => {
-    cy.get('[type="email"]').type('not_an_email')
+  // Other existing tests...
+
+  it('validate IRI email and password against AirTable 1', () => {
+    // Assuming you have input fields for IRI email and password
+    cy.get('#iri-email').type(iriEmail)
+    cy.get('#iri-password').type(iriPassword)
     cy.get('[type="submit"]').click()
-    cy.get('[type="email"]').then(($input) => {
-      expect($input[0].validationMessage).to.eq('Please include an \'@\' in the email address. \'not_an_email\' is missing an \'@\'.')
-    })
+
+    // Add assertions based on the response from AirTable 1
+    // For example, check if a Thank You screen is displayed if credentials are valid
+    cy.contains('Thank You').should('be.visible')
   })
 
-  it('check for validation message for no email input', () => {
+  it('enter student information into AirTable 2', () => {
+    // Assuming you have input fields for student name, hours met, and progress description
+    cy.get('#student-name').type(studentName)
+    cy.get('#hours-met').type(hoursMet)
+    cy.get('#progress-description').type(progressDescription)
     cy.get('[type="submit"]').click()
-    cy.get('[type="email"]').then(($input) => {
-      expect($input[0].validationMessage).to.eq('Please fill out this field.')
-    })
-  })
 
-  it('check for validation message with email and no feedback', () => {
-    cy.get('[type="email"]').type(email)
-    cy.get('[type="submit"]').click()
-    cy.get('#feedback').then(($input) => {
-      expect($input[0].validationMessage).to.eq('Please fill out this field.')
-    })
-  })
-
-  it('submitting feedback should redirect to /success', () => {
-    cy.get('#name').type(name)
-    cy.get('[type="email"]').type(email)
-    cy.get('#feedback').type(feedback)
-    cy.get('[type="submit"]').click()
-   
-    cy.url().should('include', '/success')
-
+    // Add assertions based on the response from AirTable 2
+    // For example, check if a Thank You screen is displayed after submitting student information
+    cy.contains('Thank You').should('be.visible')
   })
 })
